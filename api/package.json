@@ -1,0 +1,9 @@
+{
+  "name": "stroll-api",
+  "version": "1.0.0",
+  "description": "stroll api server",
+  "main": "src/index.js",
+  "repository": {},
+  "author": "khirayama",
+  "license": "MIT"
+}
