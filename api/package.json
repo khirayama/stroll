@@ -6,7 +6,11 @@
   "repository": {},
   "author": "khirayama",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
   "dependencies": {
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "nodemon": "^1.11.0"
   }
 }
