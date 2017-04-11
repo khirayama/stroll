@@ -5,5 +5,8 @@
   "main": "src/index.js",
   "repository": {},
   "author": "khirayama",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
 }
