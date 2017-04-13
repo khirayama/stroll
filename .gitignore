@@ -1,1 +1,7 @@
+.DS_Store
+
+/* api server */
 /api/node_modules
+
+/* web client */
+/web/node_modules
