@@ -1,5 +1,5 @@
 {
-  "name": "stroll-api",
+  "name": "stroll-api-server",
   "version": "1.0.0",
   "description": "stroll api server",
   "main": "src/index.js",
