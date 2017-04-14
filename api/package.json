@@ -10,7 +10,9 @@
     "dev": "nodemon src/index.js"
   },
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "jwt-simple": "^0.5.1",
     "nodemon": "^1.11.0"
   }
 }

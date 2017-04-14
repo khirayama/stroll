@@ -20,5 +20,4 @@
 
 ## Database
 
-users(id / provider / uid / username / created_at / updated_at)
-tokens(id / user_id / expires)
+users(id / provider / uid / created_at / updated_at)
