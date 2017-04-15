@@ -2,6 +2,7 @@
 
 /* api server */
 /api/node_modules
+/api/sequelize-meta.json
 
 /* web client */
 /web/node_modules
