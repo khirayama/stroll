@@ -1,0 +1,2 @@
+CREATE DATABASE stroll_database_development;
+CREATE DATABASE stroll_database_test;
