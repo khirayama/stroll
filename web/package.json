@@ -5,9 +5,11 @@
   "author": "khirayama",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "compile:scripts": "babel src --out-dir dist",
-    "compile:scripts:watch": "babel src --out-dir dist -w --source-maps inline"
+    "dev": "rm -rf dist && npm run compile:scripts && (npm run compile:scripts:watch & npm run bundle:scripts:watch & nodemon dist/server.js)",
+    "compile:scripts": "babel src --out-dir dist --ignore src/client.js",
+    "compile:scripts:watch": "babel src --out-dir dist -w --source-maps inline --ignore src/client.js",
+    "bundle:scripts": "webpack -p",
+    "bundle:scripts:watch": "webpack -w"
   },
   "dependencies": {
     "babel-cli": "^6.24.1",
