@@ -4,7 +4,7 @@ import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import Page from './components/page';
+import HomePage from './components/home-page';
 
 const app = express();
 
@@ -27,8 +27,102 @@ function template(content) {
     <link rel="apple-touch-icon" sizes="76x76" href="/images/icon-ios.png">
     <script src="/bundle.js" defer></script>
     <style>
+    /* reset */
     html,
-    body {
+    body,
+    section,
+    header,
+    footer,
+    div,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    a,
+    span,
+    ul,
+    li,
+    label,
+    input,
+    textarea,
+    select,
+    button,
+    table,
+    thead,
+    tbody,
+    tr,
+    th,
+    td,
+    i {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      outline: 0;
+      border: 0;
+      border-radius: 0;
+      font-weight: inherit;
+      font-style: normal;
+      font-size: inherit;
+      line-height: 1.4;
+      vertical-align: baseline;
+      font-feature-settings: "palt";
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+    }
+    ul {
+      list-style: none;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.8rem;
+    }
+    h3 {
+      font-size: 1.6rem;
+    }
+    h4 {
+      font-size: 1.4rem;
+    }
+    h5 {
+      font-size: 1.2rem;
+    }
+    h6 {
+      font-size: 1rem;
+    }
+    small {
+      font-size: 0.8rem;
+    }
+    input,
+    textarea,
+    select,
+    button {
+      font-size: inherit;
+      font-family: inherit;
+    }
+    form,
+    input,
+    textarea,
+    select,
+    button,
+    a {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      -webkit-user-select: auto;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* application */
+    html,
+    body,
+    .application {
       width: 100%;
       height: 100%;
       padding: 0;
@@ -36,50 +130,13 @@ function template(content) {
     }
     html {
       color: #666;
+      font-family: sans-serif;
     }
     </style>
   </head>
   <body>
-    ${content}
-    <section class="application"></section>
-    <div onclick="eventHandlers.handleClickLoginWithFacebook(event)">Login with Facebook</div>
-    <div onclick="eventHandlers.handleClickLogout(event)">Logout</div>
+    <section class="application">${content}</section>
   </body>
-  <script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId: '772950426216569',
-        xfbml: true,
-        version: 'v2.8',
-        status: true,
-      });
-      FB.AppEvents.logPageView();
-      FB.getLoginStatus(res => {
-        console.log(res);
-      });
-    };
-
-    (function(d, s, id){
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
-    const eventHandlers = {
-      handleClickLoginWithFacebook: (event) => {
-        FB.login(res => {
-          console.log(res);
-        });
-      },
-      handleClickLogout: (event) => {
-        FB.logout(res => {
-          console.log(res);
-        });
-      },
-    };
-  </script>
 </html>
   `);
 }
@@ -87,7 +144,7 @@ function template(content) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  const content = ReactDOMServer.renderToString(<Page/>);
+  const content = ReactDOMServer.renderToString(<HomePage />);
   res.send(template(content));
 });
 
