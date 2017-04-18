@@ -1,9 +1,15 @@
-const express = require('express');
+import path from 'path';
+
+import express from 'express';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+
+import Page from './components/page';
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send(`
+function template(content) {
+  return (`
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,10 +25,22 @@ app.get('/', (req, res) => {
     <meta name="apple-mobile-web-app-title" content="Handle">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" sizes="76x76" href="/images/icon-ios.png">
-    <!-- <link rel="stylesheet" href="/index.css"> -->
-    <!-- <script src="/bundle.js" defer></script> -->
+    <script src="/bundle.js" defer></script>
+    <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+    html {
+      color: #666;
+    }
+    </style>
   </head>
   <body>
+    ${content}
     <section class="application"></section>
     <div onclick="eventHandlers.handleClickLoginWithFacebook(event)">Login with Facebook</div>
     <div onclick="eventHandlers.handleClickLogout(event)">Logout</div>
@@ -64,6 +82,13 @@ app.get('/', (req, res) => {
   </script>
 </html>
   `);
+}
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  const content = ReactDOMServer.renderToString(<Page/>);
+  res.send(template(content));
 });
 
 app.listen(3001, () => {
