@@ -1,14 +1,10 @@
 import path from 'path';
 
 import express from 'express';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-
-import HomePage from './components/home-page';
 
 const app = express();
 
-function template(content) {
+function template() {
   return (`
 <!DOCTYPE html>
 <html lang="en">
@@ -135,7 +131,7 @@ function template(content) {
     </style>
   </head>
   <body>
-    <section class="application">${content}</section>
+    <section class="application"></section>
   </body>
 </html>
   `);
@@ -144,8 +140,7 @@ function template(content) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  const content = ReactDOMServer.renderToString(<HomePage />);
-  res.send(template(content));
+  res.send(template());
 });
 
 app.listen(3001, () => {
