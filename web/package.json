@@ -9,7 +9,12 @@
     "compile:scripts": "babel src --out-dir dist --ignore src/client.js",
     "compile:scripts:watch": "babel src --out-dir dist -w --source-maps inline --ignore src/client.js",
     "bundle:scripts": "webpack -p",
-    "bundle:scripts:watch": "webpack -w"
+    "bundle:scripts:watch": "webpack -w",
+    "test": "ava",
+    "test:watch": "ava -w"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1"
   },
   "dependencies": {
     "@khirayama/circuit": "^1.1.1",
@@ -22,5 +27,14 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "webpack": "^2.4.1"
+  },
+  "ava": {
+    "babel": "inherit",
+    "files": [
+      "test/**/*.js"
+    ],
+    "require": [
+      "babel-core/register"
+    ]
   }
 }
