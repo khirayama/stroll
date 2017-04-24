@@ -1,7 +1,7 @@
 import test from 'ava';
 import React from 'react';
 
-import {Router} from '../src/router';
+import Router from '../src/router';
 
 class Home extends React.Component {
   render() {
@@ -76,7 +76,7 @@ test('router._getRoute', t => {
   t.deepEqual(
     route,
     Object.assign({}, route, {
-      params: {id: ['10']}
+      params: {id: '10'}
     })
   );
 });
@@ -88,5 +88,66 @@ test('router._getRoute', t => {
   t.deepEqual(
     route,
     null
+  );
+});
+
+test('router.push', t => {
+  const router = t.context.router;
+  router.push('/');
+
+  t.is(
+    router._histories.length,
+    1
+  );
+  t.deepEqual(
+    router.present(),
+    routes[0]
+  );
+
+  router.push('/');
+
+  t.is(
+    router._histories.length,
+    1
+  );
+  t.deepEqual(
+    router.present(),
+    routes[0]
+  );
+
+  router.push('/posts');
+
+  t.is(
+    router._histories.length,
+    2
+  );
+  t.deepEqual(
+    router.present(),
+    routes[1]
+  );
+});
+
+test('router.pop', t => {
+  const router = t.context.router;
+  router.push('/');
+  router.push('/posts');
+
+  t.is(
+    router._histories.length,
+    2
+  );
+  t.deepEqual(
+    router.present(),
+    routes[1]
+  );
+
+  router.pop();
+  t.is(
+    router._histories.length,
+    1
+  );
+  t.deepEqual(
+    router.present(),
+    routes[0]
   );
 });
