@@ -132,11 +132,14 @@ export default class Router {
   }
 
   pop() {
-    const popedRoute = this._histories.pop();
-    this._listeners.forEach(listener => {
-      listener(this._histories[this._histories.length - 1]);
-    });
-    return popedRoute;
+    if (this._histories.length !== 0) {
+      const popedRoute = this._histories.pop();
+      this._listeners.forEach(listener => {
+        listener(this._histories[this._histories.length - 1]);
+      });
+      return popedRoute;
+    }
+    return null;
   }
 
   present() {
