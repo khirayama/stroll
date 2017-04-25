@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {createStore} from '@khirayama/circuit';
 
 import {routes} from './routes';
-
+import Router from './router';
 import Navigator from './components/navigator';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -12,10 +12,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const store = createStore(window.state);
 
+  const router = new Router(routes);
+  router.push(location.pathname);
+
   ReactDOM.render((
     <Navigator
-      path={location.pathname}
-      routes={routes}
+      router={router}
+      store={store}
     />
   ), document.querySelector('.application'));
 });

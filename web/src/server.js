@@ -1,17 +1,25 @@
 import path from 'path';
 
 import express from 'express';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+
+import {Store} from '@khirayama/circuit';
+
+import {routes} from './routes';
+import Router from './router';
+import Navigator from './components/navigator';
 
 const app = express();
 
-function template() {
+function template(title, content, state) {
   return (`
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Stroll</title>
+    <title>${title}</title>
     <!-- standalone for android-->
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" sizes="192x192" href="/images/icon-android.png">
@@ -131,7 +139,8 @@ function template() {
     </style>
   </head>
   <body>
-    <section class="application"></section>
+    <section class="application">${content}</section>
+    <script>window.state = ${JSON.stringify(state)};</script>
   </body>
 </html>
   `);
@@ -139,8 +148,25 @@ function template() {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  res.send(template());
+app.get('/*', (req, res) => {
+  const router = new Router(routes);
+  const route = router.push(req.path);
+
+  route.data().then(() => {
+    const store = new Store({});
+    res.send(
+      template(
+        route.title,
+        ReactDOMServer.renderToString((
+          <Navigator
+            router={router}
+            store={store}
+          />
+        )),
+        store.getState()
+      )
+    );
+  }).catch(err => console.log(err));
 });
 
 app.listen(3001, () => {
