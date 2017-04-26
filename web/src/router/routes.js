@@ -1,7 +1,7 @@
-import HomePage from './components/home-page';
+import HomePage from '../components/home-page';
 
 import React from 'react';
-import {Link} from './components/navigator';
+import {Link} from '../components/navigator';
 
 class TestPage extends React.Component {
   render() {

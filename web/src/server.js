@@ -6,8 +6,9 @@ import ReactDOMServer from 'react-dom/server';
 
 import {Store} from '@khirayama/circuit';
 
-import {routes} from './routes';
 import Router from './router';
+import {routes} from './router/routes';
+
 import Navigator from './components/navigator';
 
 const app = express();
@@ -148,7 +149,10 @@ function template(title, content, state) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/*', (req, res) => {
+app.get([
+  '/',
+  '/test',
+], (req, res) => {
   const router = new Router(routes);
   const route = router.push(req.path);
 

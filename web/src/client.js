@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 
 import {createStore} from '@khirayama/circuit';
 
-import {routes} from './routes';
 import Router from './router';
+import {routes} from './router/routes';
+
 import Navigator from './components/navigator';
 
 window.addEventListener('DOMContentLoaded', () => {
