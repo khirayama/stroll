@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import Page from '../page';
+import {Link} from '../navigator';
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -46,6 +47,7 @@ export default class HomePage extends Component {
       <Page>
         <div onClick={this.handleClickLoginWithFacebook}>Login with Facebook</div>
         <div onClick={this.handleClickLogout}>Logout</div>
+        <Link href="/test">to test</Link>
       </Page>
     );
   }
