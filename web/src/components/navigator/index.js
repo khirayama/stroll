@@ -6,10 +6,18 @@ const style = {
   navigator: {
     width: '100%',
     height: '100%',
+    position: 'fixed',
+    top: '0',
+    left: '0',
   },
   scene: {
     width: '100%',
     height: '100%',
+    background: 'red',
+    display: 'inline-block',
+    position: 'absolute',
+    top: '0',
+    left: '0',
   },
 };
 
@@ -51,32 +59,38 @@ Link.contextTypes = {
   router: PropTypes.object,
 };
 
-const TRANSITION_TIME = 3000;
+const TRANSITION_TIME = 600;
 
 export class Scene extends Component {
-  componentWillAppear(callback) {
-    console.log('componentWillAppear');
-    setTimeout(callback, TRANSITION_TIME);
-  }
-  componentDidAppear() {
-    console.log('componentDidAppear');
+  constructor() {
+    super();
+
+    this.setRef = this._setRef.bind(this);
   }
   componentWillEnter(callback) {
-    console.log('componentWillEnter');
+    // console.log('componentWillEnter');
+    this._scene.style.pointerEvents = 'none';
     setTimeout(callback, TRANSITION_TIME);
   }
   componentDidEnter() {
-    console.log('componentDidEnter');
+    // console.log('componentDidEnter');
+    this._scene.style.pointerEvents = 'auto';
   }
   componentWillLeave(callback) {
-    console.log('componentWillLeave');
+    // console.log('componentWillLeave');
+    this._scene.style.pointerEvents = 'none';
     setTimeout(callback, TRANSITION_TIME);
   }
   componentDidLeave() {
-    console.log('componentDidLeave');
+    // console.log('componentDidLeave');
+    this._scene.style.pointerEvents = 'auto';
+  }
+  _setRef(scene) {
+    this._scene = scene;
   }
   render() {
-    return <section style={style.scene}>{this.props.children}</section>;
+    // console.log('render scene');
+    return <section style={style.scene} ref={this.setRef}>{this.props.children}</section>;
   }
 }
 
