@@ -13,6 +13,26 @@ const style = {
   },
 };
 
+export class BackLink extends Component {
+  constructor() {
+    super();
+
+    this.handleClick = this._handleClick.bind(this);
+  }
+  _handleClick(event) {
+    event.preventDefault();
+    this.context.router.pop();
+  }
+  render() {
+    const route = this.context.router.prev();
+    const href = route.path;
+    return <a href={href} onClick={this.handleClick}>{this.props.children}</a>;
+  }
+}
+BackLink.contextTypes = {
+  router: PropTypes.object,
+};
+
 export class Link extends Component {
   constructor() {
     super();
@@ -21,11 +41,7 @@ export class Link extends Component {
   }
   _handleClick(event) {
     event.preventDefault();
-    const route = this.context.router.push(this.props.href);
-    if (window.history) {
-      document.title = route.title;
-      window.history.pushState(null, null, this.props.href);
-    }
+    this.context.router.push(this.props.href);
   }
   render() {
     return <a href={this.props.href} onClick={this.handleClick}>{this.props.children}</a>;
@@ -78,14 +94,21 @@ export default class Navigator extends Component {
   }
 
   componentDidMount() {
-    this.props.router.addChangeListener(route => {
-      this.setState({route});
+    this.props.router.addChangeListener((route, isPop) => {
+      if (route) {
+        if (isPop) {
+          window.history.replaceState(null, null, route.path);
+        } else {
+          window.history.pushState(null, null, route.path);
+        }
+        document.title = route.title;
+        this.setState({route});
+      }
     });
 
     if (window.history) {
       window.addEventListener('popstate', event => {
-        const route = this.props.router.push(location.pathname);
-        document.title = route.title;
+        this.props.router.pop(location.pathname);
       });
     }
   }
