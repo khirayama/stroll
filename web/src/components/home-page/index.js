@@ -45,9 +45,9 @@ export default class HomePage extends Component {
   render() {
     return (
       <Page>
+        <Link href="/test">to test</Link>
         <div onClick={this.handleClickLoginWithFacebook}>Login with Facebook</div>
         <div onClick={this.handleClickLogout}>Logout</div>
-        <Link href="/test">to test</Link>
       </Page>
     );
   }

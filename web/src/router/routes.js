@@ -1,15 +1,21 @@
 import HomePage from '../components/home-page';
 
 import React from 'react';
-import {Link} from '../components/navigator';
+import Page from '../components/page';
+import {BackLink, Link} from '../components/navigator';
 
 class TestPage extends React.Component {
   render() {
     return (
-      <section>
+      <Page>
+        <p>
+          <BackLink>back</BackLink>
+        </p>
+        <p>
+          <Link href="/">to home</Link>
+        </p>
         <div>Test</div>
-        <Link href="/">to home</Link>
-      </section>
+      </Page>
     );
   }
 }
