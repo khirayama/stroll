@@ -8,6 +8,7 @@ import {Store} from '@khirayama/circuit';
 
 import Router from './router';
 import {routes} from './router/routes';
+import {reducer} from './reducer';
 
 import Navigator from './components/navigator';
 
@@ -157,7 +158,10 @@ app.get([
   const route = router.push(req.path);
 
   route.data().then(() => {
-    const store = new Store({});
+    const initialState = {
+      isAuthenticated: false,
+    };
+    const store = new Store(initialState, reducer);
     res.send(
       template(
         route.title,
