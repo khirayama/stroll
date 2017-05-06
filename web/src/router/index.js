@@ -103,7 +103,7 @@ export default class Router {
     this._listeners = [];
 
     this._routes = routes;
-    this._histories = [];
+    this._histories = this._load() || [];
   }
 
   _getRoute(path) {
@@ -118,13 +118,25 @@ export default class Router {
     }
     return null;
   }
+  _save() {
+    if (typeof window === 'object' && window.localStorage) {
+      window.localStorage.setItem('__router_histories', JSON.stringify(this._histories));
+    }
+  }
+  _load() {
+    if (typeof window === 'object' && window.localStorage) {
+      return JSON.parse(window.localStorage.getItem('__router_histories'));
+    }
+  }
 
   push(path) {
     const route = this._getRoute(path);
-    if ((this._histories[this._histories.length - 1] || {}).path !== (route || {}).path) {
-      this._histories.push(route);
+    if (this._histories[this._histories.length - 1] !== (route || {}).path) {
+      this._histories.push(path);
+      this._save();
       this._listeners.forEach(listener => {
-        listener(this._histories[this._histories.length - 1]);
+        const path_ = this._histories[this._histories.length - 1];
+        listener(this._getRoute(path_), false);
       });
       return route;
     }
@@ -132,18 +144,34 @@ export default class Router {
   }
 
   pop() {
-    if (this._histories.length !== 0) {
-      const popedRoute = this._histories.pop();
+    if (this._histories.length < 1) {
+      const popedPath = this._histories.pop();
+      this._save();
       this._listeners.forEach(listener => {
-        listener(this._histories[this._histories.length - 1]);
+        const path_ = this._histories[this._histories.length - 1];
+        listener(this._getRoute(path_), true);
       });
-      return popedRoute;
+      return popedPath;
+    } else {
+      const route = this.prev();
+      this._histories.push(route.path);
+      this._save();
+      this._listeners.forEach(listener => {
+        const path_ = this._histories[this._histories.length - 1];
+        listener(this._getRoute(path_), true);
+      });
+      return route;
     }
-    return null;
+  }
+
+  prev() {
+    const path = this._histories[this._histories.length - 2];
+    return this._getRoute(path) || this._routes[0];
   }
 
   present() {
-    return this._histories[this._histories.length - 1] || this._routes[0] || null;
+    const path = this._histories[this._histories.length - 1];
+    return this._getRoute(path) || this._routes[0];
   }
 
   addChangeListener(listener) {
