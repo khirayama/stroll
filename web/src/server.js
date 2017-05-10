@@ -6,11 +6,11 @@ import ReactDOMServer from 'react-dom/server';
 
 import {Store} from '@khirayama/circuit';
 
-import Router from './router';
-import {routes} from './router/routes';
-import {reducer} from './reducer';
+import Router from './libs/web-storyboard/router';
+import {segues, storyboards} from './libs/web-storyboard/stories';
+import {Navigator} from './libs/web-storyboard/components';
 
-import Navigator from './components/navigator';
+import {reducer} from './reducer';
 
 const app = express();
 
@@ -152,23 +152,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get([
   '/',
-  '/test',
+  '/posts',
+  '/posts/:id',
+  '/profile',
 ], (req, res) => {
-  const router = new Router(routes);
-  const route = router.push(req.path);
+  const router = new Router(segues, storyboards);
+  const store = new Store({});
 
-  route.data().then(() => {
-    const initialState = {
-      isAuthenticated: false,
-    };
-    const store = new Store(initialState, reducer);
+  router.serverInit(req.path).then((result) => {
     res.send(
       template(
-        route.title,
+        result.title,
         ReactDOMServer.renderToString((
           <Navigator
+            path={req.path}
             router={router}
-            store={store}
           />
         )),
         store.getState()
