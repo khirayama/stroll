@@ -159,7 +159,7 @@ app.get([
   const router = new Router(segues, storyboards);
   const store = new Store({});
 
-  router.serverInit(req.path).then((result) => {
+  router.initialize(req.path).then((result) => {
     res.send(
       template(
         result.title,

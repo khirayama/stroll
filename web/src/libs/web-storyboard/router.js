@@ -214,7 +214,7 @@ export default class Router {
     });
   }
 
-  serverInit(path) {
+  initialize(path) {
     return new Promise(resolve => {
       const storyboard = this.getStoryboardByPath(path);
       const options = storyboard.options || {};
