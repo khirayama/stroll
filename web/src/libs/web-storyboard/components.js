@@ -95,10 +95,26 @@ export class Storyboard extends Component {
   constructor() {
     super();
 
+    this.state = {
+      initializing: false,
+    };
+
     this.setStoryboard = this._setStoryboard.bind(this);
     this.setContent = this._setContent.bind(this);
   }
   componentWillEnter(callback) {
+    this.setState({
+      initializing: true,
+    });
+    this.props.router.initialize(window.location.pathname).then(result => {
+      if (result.title) {
+        window.document.title = result.title;
+      }
+      this.setState({
+        initializing: false,
+        value: result.value,
+      });
+    });
     this._setTransitionEnterStyle();
     setTimeout(callback, TRANSITION_TIME);
   }
@@ -209,11 +225,16 @@ export class Storyboard extends Component {
     style.transform = 'none';
   }
   render() {
-    const segue = this.context.segue();
+    const props = Object.assign({
+      initializing: this.state.initializing,
+      value: this.state.value,
+    }, this.props);
+    const storyboard = this.props.storyboard;
+    const element = React.createElement(this.props.storyboard.component, props);
 
     return (
       <section style={style.storyboard} ref={this.setStoryboard}>
-        <section style={style.storyboardContent} ref={this.setContent}>{this.props.children}</section>
+        <section style={style.storyboardContent} ref={this.setContent}>{element}</section>
       </section>
     );
   }
@@ -245,7 +266,6 @@ export class Navigator extends Component {
     this.state = {
       storyboardKey: storyboard.key,
       segue: null,
-      initializing: false,
     };
 
     this.move = this._move.bind(this);
@@ -282,12 +302,11 @@ export class Navigator extends Component {
       <section style={style.navigator}>
         <ReactTransitionGroup>
           <Storyboard
-            segue={this.state.segue}
+            {...this.props}
             storyboard={storyboard}
+            router={this.props.router}
             key={storyboard.key + new Date().getTime()}
-          >{
-            React.createElement(storyboard.component, Object.assign({}, this.props, {storyboard}))
-          }</Storyboard>
+          />
         </ReactTransitionGroup>
       </section>
     );
