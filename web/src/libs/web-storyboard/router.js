@@ -231,14 +231,4 @@ export default class Router {
       });
     });
   }
-
-  push(path, options) {
-    // Bool: options.initialize
-    // Function: options.title
-  }
-
-  back(options) {
-    // Bool options.initialize
-    // Function: options.title
-  }
 }
