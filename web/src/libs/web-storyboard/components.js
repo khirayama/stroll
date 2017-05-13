@@ -104,18 +104,7 @@ export class Storyboard extends Component {
     this.setContent = this._setContent.bind(this);
   }
   componentWillEnter(callback) {
-    this.setState({
-      initializing: true,
-    });
-    this.props.router.initialize(window.location.pathname).then(result => {
-      if (result.title) {
-        window.document.title = result.title;
-      }
-      this.setState({
-        initializing: false,
-        value: result.value,
-      });
-    });
+    this._initialize();
     this._setTransitionEnterStyle();
     setTimeout(callback, TRANSITION_TIME);
   }
@@ -131,6 +120,20 @@ export class Storyboard extends Component {
   }
   _setContent(content) {
     this._content = content;
+  }
+  _initialize() {
+    this.setState({
+      initializing: true,
+    });
+    this.props.router.initialize(window.location.pathname).then(result => {
+      if (result.title) {
+        window.document.title = result.title;
+      }
+      this.setState({
+        initializing: false,
+        value: result.value,
+      });
+    });
   }
   _setTransitionEnterStyle() {
     const style = this._storyboard.style;
