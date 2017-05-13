@@ -50,8 +50,9 @@ export class Link extends Component {
     this.handleClick = this._handleClick.bind(this);
   }
   _handleClick(event) {
-    if (window.history) {
+    if (window.history && !event.metaKey) {
       event.preventDefault();
+
       const path = this.props.href;
       window.history.pushState(null, null, path);
       this.context.move(path);
@@ -73,7 +74,7 @@ export class BackLink extends Component {
     this.handleClick = this._handleClick.bind(this);
   }
   _handleClick(event) {
-    if (window.history) {
+    if (window.history && !event.metaKey) {
       event.preventDefault();
       const path = this.context.calcBackPath();
       window.history.pushState(null, null, path);
