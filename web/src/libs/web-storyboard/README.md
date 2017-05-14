@@ -74,3 +74,30 @@ const storyboards = [{
 [Main Storyboard]-----(show)---[Post Index Storyboard]---(show)---[Post Show Storyboard]
                    |
                    ---(temporary)---[Profile Storyboard]
+
+## Memo
+histories - sessionStorage
+histories.length - sessionStorage
+
+land page
+  if
+    root === currentpathname ||
+    histories.last !== currentPathname ||
+    histories.length !== history.length
+      empty histories
+
+move page
+  if pathname === root
+    empty histories
+
+click link
+  pushState
+  push histories
+
+click browser back/forward
+
+click backLink
+  if histories.length
+    history.back
+  else
+    jump root
