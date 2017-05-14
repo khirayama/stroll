@@ -38,6 +38,10 @@ class PostShowStoryboard extends Component {
       <section>
         <h1>PostShowStoryboard</h1>
         <BackLink>Back</BackLink>
+        <ul>
+          <li><Link href="/posts/1">Post 1</Link></li>
+          <li><Link href="/posts/2">Post 2</Link></li>
+        </ul>
       </section>
     );
   }
