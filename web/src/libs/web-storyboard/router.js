@@ -104,6 +104,16 @@ export default class Router {
     this._storyboards = storyboards;
   }
 
+  getRootStoryboard() {
+    for (let i = 0; i < this._storyboards.length; i++) {
+      const storyboard = this._storyboards[i];
+      if (storyboard.root) {
+        return storyboard;
+      }
+    }
+    return this._storyboards[0];
+  }
+
   getStoryboardByPath(path) {
     for (let i = 0; i < this._storyboards.length; i++) {
       const storyboard = this._storyboards[i];
