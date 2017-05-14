@@ -50,12 +50,14 @@ export class Link extends Component {
     this.handleClick = this._handleClick.bind(this);
   }
   _handleClick(event) {
-    if (window.history && !event.metaKey) {
+    if (typeof window === 'object' && window.history && !event.metaKey) {
       event.preventDefault();
 
       const path = this.props.href;
-      window.history.pushState(null, null, path);
-      this.context.move(path);
+      if (this.context.isPush(path)) {
+        window.history.pushState(null, null, path);
+        this.context.move(path);
+      }
     }
   }
   render() {
@@ -64,6 +66,7 @@ export class Link extends Component {
 }
 Link.contextTypes = {
   move: PropTypes.func,
+  isPush: PropTypes.func,
 };
 
 // BackLink Component
@@ -74,20 +77,25 @@ export class BackLink extends Component {
     this.handleClick = this._handleClick.bind(this);
   }
   _handleClick(event) {
-    if (window.history && !event.metaKey) {
+    if (typeof window === 'object' && window.history && !event.metaKey) {
       event.preventDefault();
-      const path = this.context.calcBackPath();
-      window.history.pushState(null, null, path);
-      this.context.move(path);
+      const {path, isBack} = this.context.calcBackPath();
+      if (isBack) {
+        window.history.back();
+      } else if (this.context.isPush(path)){
+        window.history.pushState(null, null, path);
+        this.context.move(path);
+      }
     }
   }
   render() {
-    const path = this.context.calcBackPath();
-    return <a href={path} onClick={this.handleClick}>{this.props.children}</a>;
+    const {path} = this.context.calcBackPath();
+    return <a onClick={this.handleClick}>{this.props.children}</a>;
   }
 }
 BackLink.contextTypes = {
   move: PropTypes.func,
+  isPush: PropTypes.func,
   calcBackPath: PropTypes.func,
 };
 
@@ -122,18 +130,20 @@ export class Storyboard extends Component {
     this._content = content;
   }
   _initialize() {
-    this.setState({
-      initializing: true,
-    });
-    this.props.router.initialize(window.location.pathname).then(result => {
-      if (result.title) {
-        window.document.title = result.title;
-      }
+    if (typeof window === 'object') {
       this.setState({
-        initializing: false,
-        value: result.value,
+        initializing: true,
       });
-    });
+      this.props.router.initialize(window.location.pathname).then(result => {
+        if (result.title) {
+          window.document.title = result.title;
+        }
+        this.setState({
+          initializing: false,
+          value: result.value,
+        });
+      });
+    }
   }
   _setTransitionEnterStyle() {
     const style = this._storyboard.style;
@@ -257,6 +267,7 @@ export class Navigator extends Component {
   getChildContext() {
     return {
       move: this.move,
+      isPush: this.isPush,
       segue: () => this.state.segue,
       calcBackPath: this.calcBackPath,
     };
@@ -267,27 +278,86 @@ export class Navigator extends Component {
 
     const storyboard = this.props.router.getStoryboardByPath(props.path);
 
+    this._nav = this._loadNav();
+    if (typeof window === 'object') {
+      if (
+        this.props.router.isRootStoryboard() ||
+        this._nav.histories[this._nav.histories.length - 1] !== window.location.pathname ||
+        this._nav.length !== window.history.length
+      ) {
+        this._clearNav();
+      }
+      this._pushNav(window.location.pathname);
+    }
+
     this.state = {
       storyboardKey: storyboard.key,
       segue: null,
+      path: null,
     };
 
     this.move = this._move.bind(this);
+    this.isPush = this._isPush.bind(this);
     this.calcBackPath = this._calcBackPath.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('popstate', () => {
-      const path = location.pathname;
+      const path = window.location.pathname;
       setTimeout(() => {
         this._move(path);
       }, 25);
     });
   }
 
+  _clearNav() {
+    this._nav.histories = [];
+    this._nav.length = window.history.length;
+    this._saveNav();
+  }
+
+  _pushNav(path) {
+    this._nav.histories.push(path);
+    this._nav.length = window.history.length;
+    this._saveNav();
+  }
+
+  _loadNav() {
+    if (typeof window === 'object' && window.sessionStorage) {
+      return JSON.parse(sessionStorage.getItem('__storyboard_nav')) || {
+        histories: [],
+        length: window.history.length,
+      };
+    }
+    return {
+      histories: [],
+      length: 0,
+    }
+  }
+
+  _saveNav() {
+    if (typeof window === 'object' && window.sessionStorage) {
+      sessionStorage.setItem('__storyboard_nav', JSON.stringify(this._nav));
+    }
+  }
+
+  _isPush(path) {
+    return path !== this._nav.histories[this._nav.histories.length - 1];
+  }
+
   _move(path) {
+    if (!this._isPush(path)) {
+      return false;
+    }
+
+    if (this.props.router.isRootStoryboard(path)) {
+      this._clearNav();
+    }
+    this._pushNav(path);
+
     const nextStoryboard = this.props.router.getStoryboardByPath(path);
     const segue = this.props.router.getSegue(this.state.storyboardKey, nextStoryboard.key);
+
     this.setState({
       storyboardKey: nextStoryboard.key,
       segue,
@@ -295,8 +365,16 @@ export class Navigator extends Component {
   }
 
   _calcBackPath() {
-    const storyboard = this.props.router.estimateBackStoryboard(this.state.storyboardKey);
-    return storyboard.path;
+    if (this._nav.histories.length > 1) {
+      return {
+        path: this._nav.histories[this._nav.histories.length],
+        isBack: true,
+      };
+    }
+    return {
+      path: this.props.router.getRootStoryboard().path,
+      isBack: false,
+    };
   }
 
   render() {
@@ -319,5 +397,6 @@ export class Navigator extends Component {
 Navigator.childContextTypes = {
   move: PropTypes.func,
   segue: PropTypes.func,
+  isPush: PropTypes.func,
   calcBackPath: PropTypes.func,
 };
