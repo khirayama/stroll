@@ -34,9 +34,11 @@ class PostIndexStoryboard extends Component {
 }
 class PostShowStoryboard extends Component {
   render() {
+    const value = this.props.value;
     return (
       <section>
         <h1>PostShowStoryboard</h1>
+        <h2>{(value || {}).title}</h2>
         <BackLink>Back</BackLink>
         <ul>
           <li><Link href="/posts/1">Post 1</Link></li>
@@ -79,6 +81,10 @@ const segues = [{
   type: segueTypes.temporary,
 }, {
   from: StoryboardKeys.PostIndexStoryboard,
+  to: StoryboardKeys.PostShowStoryboard,
+  type: segueTypes.show,
+}, {
+  from: StoryboardKeys.PostShowStoryboard,
   to: StoryboardKeys.PostShowStoryboard,
   type: segueTypes.show,
 }];
