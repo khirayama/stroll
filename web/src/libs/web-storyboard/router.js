@@ -150,12 +150,6 @@ export default class Router {
       if (segue.from === fromStoryboardKey && segue.to === toStoryboardKey) {
         return segue;
       }
-      // if (
-      //   (segue.from === fromStoryboardKey && segue.to === toStoryboardKey) ||
-      //   (segue.from === toStoryboardKey && segue.to === fromStoryboardKey)
-      // ) {
-      //   return segue;
-      // }
     }
     return null;
   }
