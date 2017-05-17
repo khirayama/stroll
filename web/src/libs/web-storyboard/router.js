@@ -144,23 +144,6 @@ export default class Router {
     return null;
   }
 
-  // estimateBackStoryboard(currentStoryboardKey) {
-  //   const candidateSegues = this._segues.filter(segue => {
-  //     return (segue.to === currentStoryboardKey);
-  //   });
-  //   if (candidateSegues.length === 1) {
-  //     return this.getStoryboardByKey(candidateSegues[0].from);
-  //   } else {
-  //     for (let i = 0; i < this._storyboards.length; i++) {
-  //       const storyboard = this._storyboards[i];
-  //       if (storyboard.root) {
-  //         return storyboard;
-  //       }
-  //     }
-  //     return null;
-  //   }
-  // }
-
   getSegue(fromStoryboardKey, toStoryboardKey) {
     for (let i = 0; i < this._segues.length; i++) {
       const segue = this._segues[i];
