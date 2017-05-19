@@ -10,6 +10,8 @@
     "compile:scripts:watch": "babel src --out-dir dist -w --source-maps inline --ignore src/client.js",
     "bundle:scripts": "webpack -p",
     "bundle:scripts:watch": "webpack -w",
+    "lint": "eslint --ignore-path ../.gitignore src",
+    "lint:fix": "eslint --ignore-path ../.gitignore --fix src",
     "test": "ava",
     "test:watch": "ava -w"
   },
