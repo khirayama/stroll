@@ -157,7 +157,7 @@ app.get([
   '/profile',
 ], (req, res) => {
   const router = new Router(segues, storyboards);
-  const store = new Store({});
+  const store = new Store({}, reducer);
 
   router.initialize(req.path).then(result => {
     res.send(
