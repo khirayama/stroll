@@ -50,7 +50,7 @@ class PostShowStoryboard extends Component {
   }
 }
 PostShowStoryboard.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.object,
 };
 class ProfileStoryboard extends Component {
   render() {
