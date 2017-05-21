@@ -12,36 +12,36 @@ export default class HomePage extends Component {
   }
   componentDidMount() {
     window.fbAsyncInit = () => {
-      FB.init({
+      window.FB.init({
         appId: '772950426216569',
         xfbml: true,
         version: 'v2.8',
         status: true,
       });
-      FB.AppEvents.logPageView();
-      FB.getLoginStatus(res => {
+      window.FB.AppEvents.logPageView();
+      window.FB.getLoginStatus(res => {
         console.log(res);
       });
     };
 
     (function (d, s, id) {
-      let js,
-        fjs = d.getElementsByTagName(s)[0];
+      const fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) {
         return;
       }
-      js = d.createElement(s); js.id = id;
+      const js = d.createElement(s);
+      js.id = id;
       js.src = '//connect.facebook.net/en_US/sdk.js';
       fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'facebook-jssdk');
   }
   _handleClickLoginWithFacebook() {
-    FB.login(res => {
+    window.FB.login(res => {
       console.log(res);
     });
   }
   _handleClickLogout() {
-    FB.logout(res => {
+    window.FB.logout(res => {
       console.log(res);
     });
   }
