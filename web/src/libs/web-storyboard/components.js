@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactTransitionGroup from 'react-addons-transition-group';
 
-import Router from './router';
-
 // Link
 // BackLink
 // Storyboard
@@ -66,6 +64,10 @@ export class Link extends Component {
     return <a href={this.props.href} onClick={this.handleClick}>{this.props.children}</a>;
   }
 }
+Link.propTypes = {
+  href: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
 Link.contextTypes = {
   move: PropTypes.func,
 };
@@ -86,9 +88,12 @@ export class BackLink extends Component {
   }
   render() {
     const path = this.context.calcBackPath();
-    return <a onClick={this.handleClick}>{this.props.children}</a>;
+    return <a href={path} onClick={this.handleClick}>{this.props.children}</a>;
   }
 }
+BackLink.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 BackLink.contextTypes = {
   move: PropTypes.func,
   isPush: PropTypes.func,
@@ -182,6 +187,9 @@ export class Storyboard extends Component {
           }
           break;
         }
+        default: {
+          break;
+        }
       }
     }
   }
@@ -226,6 +234,9 @@ export class Storyboard extends Component {
           }
           break;
         }
+        default: {
+          break;
+        }
       }
     }
   }
@@ -241,16 +252,27 @@ export class Storyboard extends Component {
       initializing: this.state.initializing,
       value: this.state.value,
     }, this.props);
-    const storyboard = this.props.storyboard;
-    const element = React.createElement(this.props.storyboard.component, props);
+    const element = React.createElement(this.props.component, props);
 
     return (
-      <section style={style.storyboard} ref={this.setStoryboard}>
-        <section style={style.storyboardContent} ref={this.setContent}>{element}</section>
+      <section
+        ref={this.setStoryboard}
+        style={style.storyboard}
+        >
+        <section
+          ref={this.setContent}
+          style={style.storyboardContent}
+          >{element}</section>
       </section>
     );
   }
 }
+Storyboard.propTypes = {
+  router: PropTypes.shape({
+    initialize: PropTypes.func.isRequired,
+  }).isRequired,
+  component: PropTypes.func.isRequired,
+};
 Storyboard.contextTypes = {
   isBack: PropTypes.func,
   getSegue: PropTypes.func,
@@ -319,7 +341,7 @@ export class Navigator extends Component {
     });
   }
 
-  _loadNav(path) {
+  _loadNav() {
     if (isBrowser() && window.sessionStorage) {
       const nav = JSON.parse(window.sessionStorage.getItem('__web_storyboard_nav'));
       if (nav) {
@@ -432,15 +454,25 @@ export class Navigator extends Component {
         <ReactTransitionGroup>
           <Storyboard
             {...this.props}
-            storyboard={storyboard}
-            router={this.props.router}
             key={storyboard.key + new Date().getTime()}
+            component={storyboard.component}
+            router={this.props.router}
             />
         </ReactTransitionGroup>
       </section>
     );
   }
 }
+Navigator.propTypes = {
+  path: PropTypes.string.isRequired,
+  router: PropTypes.shape({
+    isRootStoryboard: PropTypes.func.isRequired,
+    getStoryboardByKey: PropTypes.func.isRequired,
+    getStoryboardByPath: PropTypes.func.isRequired,
+    getRootStoryboard: PropTypes.func.isRequired,
+    getSegue: PropTypes.func.isRequired,
+  }).isRequired,
+};
 Navigator.childContextTypes = {
   move: PropTypes.func,
   isBack: PropTypes.func,
