@@ -39,7 +39,7 @@ const style = {
     height: '100%',
     willChange: 'transform',
     transition: `transform ${TRANSITION_TIME}ms ${EASE_IN_OUT}`,
-  }
+  },
 };
 
 function isBrowser() {
@@ -149,7 +149,7 @@ export class Storyboard extends Component {
     const isBack = this.context.isBack();
     const segue = this.context.getSegue(isBack);
     if (segue !== null) {
-      switch(segue.type) {
+      switch (segue.type) {
         case 'show': {
           if (isBack) {
             style.zIndex = 1;
@@ -193,7 +193,7 @@ export class Storyboard extends Component {
     const isBack = this.context.isBack();
     const segue = this.context.getSegue(isBack);
     if (segue !== null) {
-      switch(segue.type) {
+      switch (segue.type) {
         case 'show': {
           if (isBack) {
             style.zIndex = 2;
@@ -256,7 +256,7 @@ Storyboard.contextTypes = {
   getSegue: PropTypes.func,
 };
 
-// const router = new Router(segues, storyboards);
+// Const router = new Router(segues, storyboards);
 // <Navigator
 //   path={path}
 //   router={router}
@@ -285,7 +285,7 @@ export class Navigator extends Component {
 
     this._nav = this._loadNav(props.path);
 
-    // reset: root storyboard || currentHistory.path !== path || currentBrowserHistory.length !== window.history.length
+    // Reset: root storyboard || currentHistory.path !== path || currentBrowserHistory.length !== window.history.length
     if (
       this.props.router.isRootStoryboard(props.path) ||
       (this._getCurrentHistory() && this._getCurrentHistory().path !== props.path) ||
@@ -344,7 +344,7 @@ export class Navigator extends Component {
       currentIndex: -1,
       histories: [],
       browserHistorylength: (isBrowser()) ? window.history.length : 0,
-    }
+    };
   }
 
   _saveNav() {
@@ -400,7 +400,7 @@ export class Navigator extends Component {
   }
 
   _forward() {
-    if(this._nav.currentIndex < this._nav.histories.length) {
+    if (this._nav.currentIndex < this._nav.histories.length) {
       this._nav.isBack = false;
       this._nav.currentIndex += 1;
       this._saveNav();
@@ -408,7 +408,7 @@ export class Navigator extends Component {
   }
 
   _back() {
-    if(this._nav.currentIndex > -1) {
+    if (this._nav.currentIndex > -1) {
       this._nav.isBack = true;
       this._nav.currentIndex -= 1;
       this._saveNav();
@@ -435,7 +435,7 @@ export class Navigator extends Component {
             storyboard={storyboard}
             router={this.props.router}
             key={storyboard.key + new Date().getTime()}
-          />
+            />
         </ReactTransitionGroup>
       </section>
     );

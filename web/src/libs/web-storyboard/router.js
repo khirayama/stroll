@@ -108,7 +108,7 @@ export default class Router {
     const storyboard = this.getRootStoryboard();
     const regexp = _pathToRegexp(storyboard.path || '');
     const matches = _exec(regexp, path);
-    return !!matches;
+    return Boolean(matches);
   }
 
   getRootStoryboard() {

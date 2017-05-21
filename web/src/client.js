@@ -21,6 +21,6 @@ window.addEventListener('DOMContentLoaded', () => {
       path={window.location.pathname}
       router={router}
       store={store}
-    />
+      />
   ), document.querySelector('.application'));
 });
