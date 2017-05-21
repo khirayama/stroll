@@ -3,6 +3,7 @@
 //                    ---(temporary)---[Profile Storyboard]
 
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Link, BackLink} from './components';
 
 class MainStoryboard extends Component {
@@ -48,6 +49,9 @@ class PostShowStoryboard extends Component {
     );
   }
 }
+PostShowStoryboard.propTypes = {
+  value: PropTypes.string,
+};
 class ProfileStoryboard extends Component {
   render() {
     return (
@@ -108,7 +112,7 @@ const storyboards = [{
     initialize: (params, args) => {
       return new Promise(resolve => {
         setTimeout(() => {
-          console.log('fetch posts');
+          console.log('fetch posts', args);
           resolve();
         }, 500);
         // Post.fetch(args).then(posts => {
@@ -127,7 +131,7 @@ const storyboards = [{
     initialize: (params, args) => {
       return new Promise(resolve => {
         setTimeout(() => {
-          console.log('fetch post');
+          console.log('fetch posts', args);
           resolve({
             id: params.id,
             title: `${params.id} post!`,
