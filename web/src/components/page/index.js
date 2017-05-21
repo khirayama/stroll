@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 const style = {
   page: {
@@ -14,3 +15,6 @@ export default class Page extends Component {
     );
   }
 }
+Page.propTypes = {
+  children: PropTypes.node.isRequired,
+};
