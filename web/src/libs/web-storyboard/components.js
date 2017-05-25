@@ -102,18 +102,14 @@ BackLink.contextTypes = {
 
 // Storyboard Component
 export class Storyboard extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      initializing: false,
-    };
+  constructor(props) {
+    super(props);
 
     this.setStoryboard = this._setStoryboard.bind(this);
     this.setContent = this._setContent.bind(this);
+    this.initialize = props.router.initialize.bind(props.router);
   }
   componentWillEnter(callback) {
-    this._initialize();
     this._setTransitionEnterStyle();
     setTimeout(callback, TRANSITION_TIME);
   }
@@ -129,22 +125,6 @@ export class Storyboard extends Component {
   }
   _setContent(content) {
     this._content = content;
-  }
-  _initialize() {
-    if (isBrowser()) {
-      this.setState({
-        initializing: true,
-      });
-      this.props.router.initialize(window.location.pathname).then(result => {
-        if (result.title) {
-          window.document.title = result.title;
-        }
-        this.setState({
-          initializing: false,
-          value: result.value,
-        });
-      });
-    }
   }
   _setTransitionEnterStyle() {
     const style = this._storyboard.style;
@@ -249,8 +229,7 @@ export class Storyboard extends Component {
   }
   render() {
     const props = Object.assign({
-      initializing: this.state.initializing,
-      value: this.state.value,
+      initialize: this.initialize,
     }, this.props);
     const element = React.createElement(this.props.component, props);
 
