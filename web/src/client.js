@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {createStore} from '@khirayama/circuit';
 
 import Router from './libs/web-storyboard/router';
-import {segues, storyboards} from './libs/web-storyboard/stories';
+import {segues, storyboards} from './config/stories';
 import {Navigator} from './libs/web-storyboard/components';
 
 import {reducer} from './reducer';
