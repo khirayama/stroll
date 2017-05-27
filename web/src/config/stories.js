@@ -9,16 +9,34 @@ import {Link, BackLink} from '../libs/web-storyboard/components';
 
 import Page from '../components/page';
 
+function isBrowser() {
+  return typeof window === 'object';
+}
+
 class Container extends Component {
   constructor(props) {
     super(props);
 
-    this.state = Object.assign({}, {
-      action: props.value || {},
-      initializing: props.initializing,
-    });
+    this.state = props.store.getState();
+    this.state.initializing = false;
+  }
+  componentWillMount() {
+    if (isBrowser()) {
+      this.setState({initializing: true});
+      this.props.initialize(window.location.pathname).then(result => {
+        if (result.title) {
+          window.document.title = result.title;
+        }
+
+        const action = result.value;
+        this.props.store.dispatch(action);
+        this.setState({initializing: false});
+      });
+    }
   }
 }
+Container.propTypes = {
+};
 
 class MainStoryboard extends Container {
   constructor(props) {
@@ -63,7 +81,6 @@ class MainStoryboard extends Container {
     });
   }
   render() {
-    console.log(this.state);
     return (
       <Page>
         <ul>
@@ -78,7 +95,6 @@ class MainStoryboard extends Container {
 }
 class PostIndexStoryboard extends Container {
   render() {
-    console.log(this.state);
     return (
       <section>
         <h1>PostIndexStoryboard</h1>
@@ -93,12 +109,10 @@ class PostIndexStoryboard extends Container {
 }
 class PostShowStoryboard extends Container {
   render() {
-    const value = this.state.value;
-    console.log(this.state);
     return (
       <section>
         <h1>PostShowStoryboard</h1>
-        <h2>{(value || {}).title}</h2>
+        <h2>{({}).title}</h2>
         <BackLink>Back</BackLink>
         <ul>
           <li><Link href="/posts/1">Post 1</Link></li>
@@ -109,11 +123,9 @@ class PostShowStoryboard extends Container {
   }
 }
 PostShowStoryboard.propTypes = {
-  value: PropTypes.object,
 };
 class ProfileStoryboard extends Container {
   render() {
-    console.log(this.state);
     return (
       <section>
         <h1>ProfileStoryboard</h1>
