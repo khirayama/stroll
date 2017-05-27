@@ -164,6 +164,8 @@ app.get([
   const store = new Store({}, reducer);
 
   router.initialize(req.path).then(result => {
+    const action = result.value;
+    store.dispatch(action);
     res.send(
       template(
         result.title,
@@ -171,6 +173,7 @@ app.get([
           <Navigator
             path={req.path}
             router={router}
+            store={store}
             />
         )),
         store.getState()
