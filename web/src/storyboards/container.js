@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import PropTypes from 'prop-types';
 
 function isBrowser() {
@@ -9,8 +9,9 @@ export default class Container extends Component {
   constructor(props) {
     super(props);
 
-    this.state = props.store.getState();
-    this.state.initializing = false;
+    this.state = Object.assign({
+      initializing: false,
+    }, props.store.getState());
   }
   componentWillMount() {
     if (isBrowser()) {
@@ -28,5 +29,10 @@ export default class Container extends Component {
   }
 }
 Container.propTypes = {
+  initialize: PropTypes.func.isRequired,
+  store: PropTypes.shape({
+    dispatch: PropTypes.func.isRequired,
+    getState: PropTypes.func.isRequired,
+  }).isRequired,
 };
 

@@ -2,8 +2,7 @@
 //                    |
 //                    ---(temporary)---[Profile Storyboard]
 
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {Link, BackLink} from '../libs/web-storyboard/components';
 
 import Container from '../storyboards/container';
