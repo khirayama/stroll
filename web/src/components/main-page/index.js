@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import Page from '../page';
 import {Link} from '../navigator';
 
-export default class HomePage extends Component {
+export default class MainPage extends Component {
   constructor(props) {
     super(props);
 
