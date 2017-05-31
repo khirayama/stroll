@@ -86,7 +86,6 @@ function createTokenHandler(req, res) {
 }
 
 function createPostHandler(req, res) {
-  console.log(req.userId);
   res.json({userId: req.userId});
 }
 
