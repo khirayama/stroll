@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jwt-simple');
 
+const { User } = require('./models');
+
 const app = express();
 const server = http.createServer(app);
 
