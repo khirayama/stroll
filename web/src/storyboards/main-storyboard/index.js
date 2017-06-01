@@ -6,6 +6,7 @@ import cookies from 'browser-cookies';
 import {Link} from '../../libs/web-storyboard/components';
 
 import Container from '../container';
+import {STROLL_ACCESS_TOKEN_KEY} from '../../constants';
 
 export default class MainStoryboard extends Container {
   constructor(props) {
@@ -22,7 +23,7 @@ export default class MainStoryboard extends Container {
         status: true,
       });
       window.FB.AppEvents.logPageView();
-      const accessToken = cookies.get('stroll_access_token');
+      const accessToken = cookies.get(STROLL_ACCESS_TOKEN_KEY) || '';
       axios.get('http://localhost:3000/api/v1/login-status', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -52,7 +53,7 @@ export default class MainStoryboard extends Container {
         uid,
       }).then(res_ => {
         const accessToken = res_.data.accessToken;
-        cookies.set('stroll_access_token', accessToken);
+        cookies.set(STROLL_ACCESS_TOKEN_KEY, accessToken);
       });
     });
   }
