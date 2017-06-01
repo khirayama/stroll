@@ -1,6 +1,7 @@
 import path from 'path';
 
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
@@ -153,6 +154,7 @@ function template(title, content, state) {
 }
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 
 app.get([
   '/',
