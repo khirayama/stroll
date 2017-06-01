@@ -9,7 +9,6 @@ export default class MainStoryboard extends Container {
     super(props);
 
     this.handleClickLoginWithFacebook = this._handleClickLoginWithFacebook.bind(this);
-    this.handleClickLogout = this._handleClickLogout.bind(this);
   }
   componentDidMount() {
     window.fbAsyncInit = () => {
@@ -54,7 +53,6 @@ export default class MainStoryboard extends Container {
           <li><Link href="/posts">Posts</Link></li>
         </ul>
         <div onClick={this.handleClickLoginWithFacebook}>Login with Facebook</div>
-        <div onClick={this.handleClickLogout}>Logout</div>
       </section>
     );
   }
