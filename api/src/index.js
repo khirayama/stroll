@@ -47,21 +47,34 @@ function requireAuthorization(req, res, next) {
     return;
   }
 
-  req.userId = payload.sub;
-  next();
+  User.findById(payload.sub).then(user => {
+    req.user = user;
+    req.isAuthenticated = true;
+    next();
+  }).catch(() => {
+    res.status(401).send({
+      error: 'Invalid access token.'
+    });
+    return;
+  });
 }
 
 function loginStatusHandler(req, res) {
-  const accessToken = extractAccessTokenFromHeader(req.headers.authorization);
-  const payload = checkAccessToken(accessToken);
-
-  const status = (payload) ? {
+  const connectedStatus = {
     status: loginStatuses.CONNECTED,
-  } : {
+  };
+  const notAuthorizedStatus = {
     status: loginStatuses.NOT_AUTHORIZED,
   };
 
-  res.json(status);
+  const accessToken = extractAccessTokenFromHeader(req.headers.authorization);
+  const payload = checkAccessToken(accessToken);
+  if (payload === null) {
+    res.json(notAuthorizedStatus);
+    return;
+  }
+
+  res.json(connectedStatus);
 }
 
 function createTokenHandler(req, res) {
