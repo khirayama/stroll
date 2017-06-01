@@ -1,5 +1,8 @@
 import React from 'react';
 
+import axios from 'axios';
+import cookies from 'browser-cookies';
+
 import {Link} from '../../libs/web-storyboard/components';
 
 import Container from '../container';
@@ -19,7 +22,12 @@ export default class MainStoryboard extends Container {
         status: true,
       });
       window.FB.AppEvents.logPageView();
-      window.FB.getLoginStatus(res => {
+      const accessToken = cookies.get('stroll_access_token');
+      axios.get('http://localhost:3000/api/v1/login-status', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then(res => {
         console.log(res);
       });
     };
@@ -37,12 +45,15 @@ export default class MainStoryboard extends Container {
   }
   _handleClickLoginWithFacebook() {
     window.FB.login(res => {
-      console.log(res);
-    });
-  }
-  _handleClickLogout() {
-    window.FB.logout(res => {
-      console.log(res);
+      const provider = 'facebook';
+      const uid = res.authResponse.userID;
+      axios.post('http://localhost:3000/api/v1/tokens', {
+        provider,
+        uid,
+      }).then(res_ => {
+        const accessToken = res_.data.accessToken;
+        cookies.set('stroll_access_token', accessToken);
+      });
     });
   }
   render() {
