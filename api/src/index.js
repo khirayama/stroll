@@ -17,7 +17,7 @@ const loginStatuses = {
 };
 
 function extractAccessTokenFromHeader(authorizationString = '') {
-  return authorizationString.replace(/^Bearer /, '');
+  return authorizationString.replace(/^Bearer/, '').trim();
 }
 
 function checkAccessToken(accessToken) {
