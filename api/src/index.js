@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jwt-simple');
 
-const { User } = require('./models');
+const {User} = require('./models');
 
 const app = express();
 const server = http.createServer(app);
@@ -35,14 +35,14 @@ function checkAccessToken(accessToken) {
   return payload;
 }
 
-// handlers
+// Handlers
 function requireAuthorization(req, res, next) {
   const accessToken = extractAccessTokenFromHeader(req.headers.authorization);
   const payload = checkAccessToken(accessToken);
 
   if (payload === null) {
     res.status(401).send({
-      error: 'Need to set access token to header.Authorization as Bearer.'
+      error: 'Need to set access token to header.Authorization as Bearer.',
     });
     return;
   }
@@ -53,9 +53,8 @@ function requireAuthorization(req, res, next) {
     next();
   }).catch(() => {
     res.status(401).send({
-      error: 'Invalid access token.'
+      error: 'Invalid access token.',
     });
-    return;
   });
 }
 
@@ -88,7 +87,7 @@ function createTokenHandler(req, res) {
     const now = new Date();
     const expires = now.setYear(now.getFullYear() + 1);
 
-    // ref: [JA] https://hiyosi.tumblr.com/post/70073770678/jwt%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E7%B0%A1%E5%8D%98%E3%81%AB%E3%81%BE%E3%81%A8%E3%82%81%E3%81%A6%E3%81%BF%E3%81%9F
+    // Ref: [JA] https://hiyosi.tumblr.com/post/70073770678/jwt%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E7%B0%A1%E5%8D%98%E3%81%AB%E3%81%BE%E3%81%A8%E3%82%81%E3%81%A6%E3%81%BF%E3%81%9F
     const accessToken = jwt.encode({
       sub: user.id,
       exp: expires,
@@ -102,7 +101,7 @@ function createPostHandler(req, res) {
   res.json({userId: req.userId});
 }
 
-// router
+// Router
 const router = new express.Router('');
 
 router.use('/api', new express.Router()
@@ -122,6 +121,6 @@ app.use((req, res, next) => {
 });
 app.use(router);
 
-// main
+// Main
 console.log('Example app listening on port 3000!');
 server.listen(port, host);
