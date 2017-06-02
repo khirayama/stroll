@@ -67,6 +67,11 @@ function loginStatusHandler(req, res) {
   };
 
   const accessToken = extractAccessTokenFromHeader(req.headers.authorization);
+  if (accessToken) {
+    res.json(notAuthorizedStatus);
+    return;
+  }
+
   const payload = checkAccessToken(accessToken);
   if (payload === null) {
     res.json(notAuthorizedStatus);
