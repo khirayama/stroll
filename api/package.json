@@ -10,10 +10,14 @@
     "dev": "nodemon src/index.js",
     "db:create": "mysql -u root < migrations/db.sql",
     "db:migrate": "sequelize db:migrate --config migrations/config.js",
-    "migration:create": "sequelize migration:create --name"
+    "migration:create": "sequelize migration:create --name",
+    "lint": "eslint --ignore-path ../.gitignore src",
+    "lint:fix": "eslint --ignore-path ../.gitignore --fix src"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
+    "eslint": "^3.19.0",
+    "eslint-config-xo-space": "^0.16.0",
     "express": "^4.15.2",
     "jwt-simple": "^0.5.1",
     "mysql": "^2.13.0",
