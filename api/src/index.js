@@ -12,8 +12,8 @@ const port = process.env.PORT || 3000;
 const host = process.env.HOST || '127.0.0.1';
 const SECRET_KEY = 'asdfghjkl';
 const loginStatuses = {
-  NOT_AUTHORIZED: '__NOT_AUTHORIZED',
-  CONNECTED: '__CONNECTED',
+  NOT_AUTHORIZED: 'not_authorized',
+  CONNECTED: 'connected',
 };
 
 function extractAccessTokenFromHeader(authorizationString = '') {
