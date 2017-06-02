@@ -12,7 +12,7 @@ import {segues, storyboards} from './config/stories';
 import {Navigator} from './libs/web-storyboard/components';
 
 import {reducer} from './reducer';
-import { STROLL_ACCESS_TOKEN_KEY } from './constants';
+import {STROLL_ACCESS_TOKEN_KEY} from './constants';
 
 const app = express();
 
@@ -163,12 +163,16 @@ app.get([
   '/posts/:id',
   '/profile',
 ], (req, res) => {
+  const initialState = {
+    isAuthenticated: false,
+  };
   const router = new Router(segues, storyboards);
-  const store = new Store({}, reducer);
+  const store = new Store(initialState, reducer);
 
-  router.initialize(req.path).then(result => {
-    const action = result.value;
-    store.dispatch(action);
+  router.initialize(req.path, {
+    accessToken: req.cookies[STROLL_ACCESS_TOKEN_KEY],
+    dispatch: store.dispatch.bind(store),
+  }).then(result => {
     res.send(
       template(
         result.title,

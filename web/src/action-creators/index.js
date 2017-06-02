@@ -7,7 +7,8 @@ export function initializeMainStoryboard(params, args, payload) {
         type: '__INITIALIZE_MAIN_STORYBOARD',
         isAuthenticated: (status === 'connected'),
       };
-      resolve(action);
+      payload.dispatch(action);
+      resolve();
     });
   });
 }

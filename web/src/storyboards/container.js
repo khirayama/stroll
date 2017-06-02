@@ -1,6 +1,8 @@
 import {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import {extractAccessToken} from '../utils';
+
 function isBrowser() {
   return typeof window === 'object';
 }
@@ -16,13 +18,13 @@ export default class Container extends Component {
   componentWillMount() {
     if (isBrowser()) {
       this.setState({initializing: true});
-      this.props.initialize(window.location.pathname).then(result => {
+      this.props.initialize(window.location.pathname, {
+        accessToken: extractAccessToken(),
+        dispatch: this.props.store.dispatch.bind(this.props.store),
+      }).then(result => {
         if (result.title) {
           window.document.title = result.title;
         }
-
-        const action = result.value;
-        this.props.store.dispatch(action);
         this.setState({initializing: false});
       });
     }

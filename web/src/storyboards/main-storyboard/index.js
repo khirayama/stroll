@@ -1,12 +1,10 @@
 import React from 'react';
 
-import axios from 'axios';
-import cookies from 'browser-cookies';
-
 import {Link} from '../../libs/web-storyboard/components';
 
 import Container from '../container';
-import {STROLL_ACCESS_TOKEN_KEY} from '../../constants';
+import {LoginStatus, Token} from '../../repositories';
+import {extractAccessToken, setAccessToken} from '../../utils';
 
 export default class MainStoryboard extends Container {
   constructor(props) {
@@ -23,13 +21,25 @@ export default class MainStoryboard extends Container {
         status: true,
       });
       window.FB.AppEvents.logPageView();
-      const accessToken = cookies.get(STROLL_ACCESS_TOKEN_KEY) || '';
-      axios.get('http://localhost:3000/api/v1/login-status', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }).then(res => {
-        console.log(res);
+
+      LoginStatus.get(extractAccessToken()).then(({status}) => {
+        if (status === 'connected') {
+          console.log(status);
+        } else {
+          window.FB.getLoginStatus(res => {
+            if (res.status === 'connected') {
+              Token.create({
+                provider: 'facebook',
+                uid: res.authResponse.userID,
+              }).then(({accessToken}) => {
+                setAccessToken(accessToken);
+                LoginStatus.get(accessToken).then(({status}) => {
+                  console.log(status);
+                });
+              });
+            }
+          });
+        }
       });
     };
 
@@ -48,12 +58,14 @@ export default class MainStoryboard extends Container {
     window.FB.login(res => {
       const provider = 'facebook';
       const uid = res.authResponse.userID;
-      axios.post('http://localhost:3000/api/v1/tokens', {
+      Token.create({
         provider,
         uid,
-      }).then(res_ => {
-        const accessToken = res_.data.accessToken;
-        cookies.set(STROLL_ACCESS_TOKEN_KEY, accessToken);
+      }).then(({accessToken}) => {
+        setAccessToken(accessToken);
+        LoginStatus.get(accessToken).then(({status}) => {
+          console.log(status);
+        });
       });
     });
   }

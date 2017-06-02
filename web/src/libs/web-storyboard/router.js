@@ -173,11 +173,11 @@ export default class Router {
     });
   }
 
-  _callInitialize(initialize, params, args) {
+  _callInitialize(initialize, params, args, payload) {
     const initialize_ = initialize || (() => null);
 
     return new Promise(resolve => {
-      const init = initialize_(params, args);
+      const init = initialize_(params, args, payload);
 
       if (init && init.then) {
         init.then(result_ => {
@@ -208,14 +208,14 @@ export default class Router {
     });
   }
 
-  initialize(path) {
+  initialize(path, payload) {
     return new Promise(resolve => {
       const storyboard = this.getStoryboardByPath(path);
       const options = storyboard.options || {};
       const result = {};
 
       this._callArgs(options.args).then(args => {
-        this._callInitialize(options.initialize, storyboard.params, args).then(value => {
+        this._callInitialize(options.initialize, storyboard.params, args, payload).then(value => {
           result.value = value;
           this._callTitle(options.title, value).then(title => {
             result.title = title;

@@ -8,6 +8,7 @@ import {Link, BackLink} from '../libs/web-storyboard/components';
 import Container from '../storyboards/container';
 
 import MainStoryboard from '../storyboards/main-storyboard';
+import {initializeMainStoryboard} from '../action-creators';
 
 class PostIndexStoryboard extends Container {
   render() {
@@ -88,7 +89,7 @@ const storyboards = [{
   path: '/',
   options: {
     args: null,
-    initialize: null,
+    initialize: initializeMainStoryboard,
     title: 'Main',
   },
 }, {
