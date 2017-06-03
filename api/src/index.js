@@ -21,18 +21,21 @@ function extractAccessTokenFromHeader(authorizationString = '') {
 }
 
 function checkAccessToken(accessToken) {
-  if (!accessToken) {
+  try {
+    if (!accessToken) {
+      return null;
+    }
+    const payload = jwt.decode(accessToken, SECRET_KEY);
+    const now = new Date().getTime();
+
+    if (!payload || payload.exp < now) {
+      return null;
+    }
+
+    return payload;
+  } catch (err) {
     return null;
   }
-
-  const payload = jwt.decode(accessToken, SECRET_KEY);
-  const now = new Date().getTime();
-
-  if (!payload || payload.exp < now) {
-    return null;
-  }
-
-  return payload;
 }
 
 // Handlers
