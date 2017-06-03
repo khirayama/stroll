@@ -29,12 +29,18 @@ export default class Container extends Component {
       });
     }
   }
+  componentDidMount() {
+    this.props.store.addChangeListener(event => {
+      console.log(event);
+    });
+  }
 }
 Container.propTypes = {
   initialize: PropTypes.func.isRequired,
   store: PropTypes.shape({
     dispatch: PropTypes.func.isRequired,
     getState: PropTypes.func.isRequired,
+    addChangeListener: PropTypes.func.isRequired,
   }).isRequired,
 };
 

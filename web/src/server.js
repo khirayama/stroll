@@ -158,9 +158,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 
 app.get([
+  '/login',
   '/',
-  '/posts',
-  '/posts/:id',
   '/profile',
 ], (req, res) => {
   const initialState = {
@@ -173,19 +172,24 @@ app.get([
     accessToken: req.cookies[STROLL_ACCESS_TOKEN_KEY],
     dispatch: store.dispatch.bind(store),
   }).then(result => {
-    res.send(
-      template(
-        result.title,
-        ReactDOMServer.renderToString((
-          <Navigator
-            path={req.path}
-            router={router}
-            store={store}
-            />
-        )),
-        store.getState()
-      )
-    );
+    const state = store.getState();
+    if (!state.isAuthenticated && req.path !== '/login') {
+      res.redirect('/login');
+    } else {
+      res.send(
+        template(
+          result.title,
+          ReactDOMServer.renderToString((
+            <Navigator
+              path={req.path}
+              router={router}
+              store={store}
+              />
+          )),
+          store.getState()
+        )
+      );
+    }
   }).catch(err => console.log(err));
 });
 
