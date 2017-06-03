@@ -141,13 +141,13 @@ export class Storyboard extends Component {
             contentStyle.transform = 'scale(0.9)';
             setTimeout(() => {
               contentStyle.transform = 'scale(1)';
-            }, 0);
+            }, 20);
           } else {
             style.zIndex = 2;
             style.transform = 'translateX(100%)';
             setTimeout(() => {
               style.transform = 'translateX(0)';
-            }, 0);
+            }, 20);
           }
           break;
         }
@@ -157,13 +157,13 @@ export class Storyboard extends Component {
             contentStyle.transform = 'scale(0.9)';
             setTimeout(() => {
               contentStyle.transform = 'scale(1)';
-            }, 0);
+            }, 20);
           } else {
             style.zIndex = 2;
             style.transform = 'translateY(100%)';
             setTimeout(() => {
               style.transform = 'translateY(0)';
-            }, 0);
+            }, 20);
           }
           break;
         }
@@ -188,13 +188,13 @@ export class Storyboard extends Component {
             style.transform = 'translateX(0)';
             setTimeout(() => {
               style.transform = 'translateX(100%)';
-            }, 0);
+            }, 20);
           } else {
             style.zIndex = 1;
             contentStyle.transform = 'scale(1)';
             setTimeout(() => {
               contentStyle.transform = 'scale(0.9)';
-            }, 0);
+            }, 20);
           }
           break;
         }
@@ -204,13 +204,13 @@ export class Storyboard extends Component {
             style.transform = 'translateY(0)';
             setTimeout(() => {
               style.transform = 'translateY(100%)';
-            }, 0);
+            }, 20);
           } else {
             style.zIndex = 1;
             contentStyle.transform = 'scale(1)';
             setTimeout(() => {
               contentStyle.transform = 'scale(0.9)';
-            }, 0);
+            }, 20);
           }
           break;
         }
