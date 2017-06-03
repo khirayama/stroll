@@ -4,6 +4,7 @@
 
 import React from 'react';
 import {Link, BackLink} from '../libs/web-storyboard/components';
+import {segueTypes} from '../libs/web-storyboard/constants';
 
 import Container from '../storyboards/container';
 
