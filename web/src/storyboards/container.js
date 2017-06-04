@@ -14,6 +14,8 @@ export default class Container extends Component {
     this.state = Object.assign({
       initializing: false,
     }, props.store.getState());
+
+    this.updateState = this._updateState.bind(this);
   }
   componentWillMount() {
     if (isBrowser()) {
@@ -30,9 +32,19 @@ export default class Container extends Component {
     }
   }
   componentDidMount() {
-    this.props.store.addChangeListener(event => {
-      console.log(event);
-    });
+    const store = this.props.store;
+
+    store.addChangeListener(this.updateState);
+  }
+  componentWillUnmount() {
+    const store = this.props.store;
+
+    store.removeChangeListener(this.updateState);
+  }
+  _updateState() {
+    const store = this.props.store;
+
+    this.setState(store.getState());
   }
 }
 Container.propTypes = {
