@@ -1,4 +1,5 @@
 import {LoginStatus} from '../repositories';
+import {Token} from '../repositories';
 
 export function initializeMainStoryboard(params, args, payload) {
   return new Promise(resolve => {
@@ -22,6 +23,14 @@ export function initializeProfileStoryboard(params, args, payload) {
       };
       payload.dispatch(action);
       resolve();
+    });
+  });
+}
+
+export function createToken(params) {
+  return new Promise(resolve => {
+    Token.create(params).then(({accessToken}) => {
+      resolve(accessToken);
     });
   });
 }
