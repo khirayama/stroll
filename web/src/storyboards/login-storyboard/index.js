@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Link} from '../../libs/web-storyboard/components';
 
 import Container from '../container';
-import {LoginStatus, Token} from '../../repositories';
+import {createToken} from '../../action-creators';
 import {setAccessToken} from '../../utils';
 
 export default class LoginStoryboard extends Container {
@@ -39,20 +39,12 @@ export default class LoginStoryboard extends Container {
     window.FB.login(res => {
       const provider = 'facebook';
       const uid = res.authResponse.userID;
-      Token.create({
+      createToken({
         provider,
         uid,
-      }).then(({accessToken}) => {
+      }).then(accessToken => {
         setAccessToken(accessToken);
-        LoginStatus.get(accessToken).then(({status}) => {
-          if (status === 'connected') {
-            this.props.store.dispatch({
-              type: '__INITIALIZE_MAIN_STORYBOARD',
-              isAuthenticated: true,
-            });
-            this.context.move('/');
-          }
-        });
+        this.context.move('/');
       });
     });
   }

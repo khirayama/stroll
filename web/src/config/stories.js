@@ -2,11 +2,7 @@
 //                    |
 //                    ---(temporary)---[Profile Storyboard]
 
-import React from 'react';
 import {segueTypes} from '../libs/web-storyboard/constants';
-import {BackLink} from '../libs/web-storyboard/components';
-
-import Container from '../storyboards/container';
 
 import LoginStoryboard from '../storyboards/login-storyboard';
 import MainStoryboard from '../storyboards/main-storyboard';
