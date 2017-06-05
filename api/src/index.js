@@ -2,15 +2,20 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jwt-simple');
+const axios = require('axios');
 
 const {User} = require('./models');
 
 const app = express();
 const server = http.createServer(app);
+const googleAPIClient = axios.create({
+  baseURL: 'https://maps.googleapis.com/maps/api/place/',
+});
 
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || '127.0.0.1';
 const SECRET_KEY = 'asdfghjkl';
+const GOOGLE_API_KEY = 'AIzaSyCvj8j-a87dEaN1gFg4DKRmUEMSqyN8BJM';
 const loginStatuses = {
   NOT_AUTHORIZED: 'not_authorized',
   CONNECTED: 'connected',
@@ -109,6 +114,17 @@ function createPostHandler(req, res) {
   res.json({userId: req.userId});
 }
 
+function nearBySearchPlace(req, res) {
+  const query = req.query;
+  googleAPIClient.get('/nearbysearch/json', {
+    params: Object.assign({}, query, {
+      key: GOOGLE_API_KEY,
+    }),
+  }).then(({data}) => {
+    res.json(data);
+  });
+}
+
 // Router
 const router = new express.Router('');
 
@@ -117,6 +133,9 @@ router.use('/api', new express.Router()
     .get('/login-status', loginStatusHandler)
     .post('/tokens', createTokenHandler)
     .post('/posts', [requireAuthorization], createPostHandler)
+    .use('/places', new express.Router()
+      .get('/nearbysearch', nearBySearchPlace)
+    )
   )
 );
 
