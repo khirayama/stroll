@@ -144,6 +144,7 @@ function template(title, content, state) {
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" sizes="76x76" href="/images/icon-ios.png">
     <script src="/bundle.js" defer></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbK99gNSjp2lu2-gQJg6bQwUpoxE-OIQA"></script>
   </head>
   <style>${resetStyle()}</style>
   <body>
