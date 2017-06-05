@@ -29,3 +29,19 @@ export const Token = {
     });
   },
 };
+
+
+export const Place = {
+  nearBy: (params) => {
+    const params_ = {
+      location: `${params.location.lat},${params.location.lng}`,
+      radius: params.radius || 400,
+      keyword: params.keyword || '',
+    };
+    return new Promise(resolve => {
+      req.get('/places/nearbysearch', {params: params_}).then(({data}) => {
+        console.log(data);
+      }).catch(err => console.log(err));
+    });
+  }
+};
