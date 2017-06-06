@@ -6,6 +6,10 @@
   "repository": {},
   "author": "khirayama",
   "license": "MIT",
+  "engines": {
+    "node": "^8.0.0",
+    "npm": "^5.0.0"
+  },
   "scripts": {
     "dev": "nodemon src/index.js",
     "db:create": "mysql -u root < migrations/db.sql",
