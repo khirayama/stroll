@@ -29,6 +29,7 @@ export default class MapView extends Component {
     this._map = new window.google.maps.Map(this._el, {
       zoom: 15,
       center: this._user.getPosition(),
+      disableDefaultUI: true,
     });
 
     this._user.setMap(this._map);
@@ -68,10 +69,10 @@ export default class MapView extends Component {
   render() {
     return (
       <section className="map-view">
-        <div onClick={() => {
+        <div className="map-view--current-position" onClick={() => {
           this._user.fetchPosition();
           this._map.panTo(this._user.getPosition());
-        }}>current</div>
+        }}>C</div>
         <section className="map-view--map" ref={this.setRef}></section>
       </section>
     );
