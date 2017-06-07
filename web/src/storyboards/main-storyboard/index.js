@@ -81,18 +81,34 @@ export default class MainStoryboard extends Container {
   }
   render() {
     return (
-      <section className="storyboard">
-        <h1>Main</h1>
-        <ul>
-          <li><Link href="/profile">Profile</Link></li>
-        </ul>
-        <input value={this.state.value} onChange={this.handleChangeInput}/>
-        <ul>{this.state.places.map(place => <li key={place.id}>{place.name}</li>)}</ul>
-        <MapView
-          places={this.state.places || []}
-          onLoad={this.handleLoadMap}
-          onDragEnd={this.handleDragEndMap}
-        />
+      <section className="storyboard main-storyboard">
+        <header className="main-storyboard--header">
+          <div className="main-storyboard--header--left">
+            <div className="main-storyboard--header--profile-link">
+              <Link href="/profile">P</Link>
+            </div>
+          </div>
+          <div className="main-storyboard--header--center">
+            <h1>Stroll</h1>
+          </div>
+          <div className="main-storyboard--header--right">
+            <div className="main-storyboard--header--search-button">
+              <Link href="/profile">S</Link>
+            </div>
+          </div>
+        </header>
+        <section className="main-storyboard--content">
+          <section className="main-storyboard--search-view">
+            <input value={this.state.value} onChange={this.handleChangeInput}/>
+            <ul>{this.state.places.map(place => <li key={place.id}>{place.name}</li>)}</ul>
+          </section>
+          <MapView
+            className="main-storyboard--map-view"
+            places={this.state.places || []}
+            onLoad={this.handleLoadMap}
+            onDragEnd={this.handleDragEndMap}
+          />
+        </section>
       </section>
     );
   }

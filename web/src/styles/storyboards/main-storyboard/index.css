@@ -1,0 +1,59 @@
+.main-storyboard {
+  $height-header: 60px;
+  position: relative;
+  .main-storyboard--header {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $height-header;
+    padding: 8px;
+    .main-storyboard--header--left {
+      .main-storyboard--header--profile-link {
+        $size: 44px;
+        background-color: $color-ui-blank;
+        width: $size;
+        height: $size;
+        line-height: $size;
+        text-align: center;
+        overflow: hidden;
+        border-radius: 50%;
+      }
+    }
+    .main-storyboard--header--center {
+      .main-storyboard--header--profile-link {
+        background-color: $color-ui-blank;
+        text-align: center;
+        overflow: hidden;
+        border-radius: 50%;
+      }
+    }
+    .main-storyboard--header--right {
+      .main-storyboard--header--search-button {
+        $size: 44px;
+        background-color: $color-ui-blank;
+        width: $size;
+        height: $size;
+        line-height: $size;
+        text-align: center;
+        overflow: hidden;
+        border-radius: 50%;
+      }
+    }
+  }
+  .main-storyboard--content {
+    position: absolute;
+    top: 60px;
+    top: $height-header;
+    width: 100%;
+    height: calc(100% - $height-header);
+    .main-storyboard--search-view {
+      position: absolute;
+    }
+    .main-storyboard--map-view {
+      position: absolute;
+    }
+  }
+}
