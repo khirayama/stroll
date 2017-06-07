@@ -40,7 +40,19 @@ export const Place = {
     };
     return new Promise(resolve => {
       req.get('/places/nearbysearch', {params: params_}).then(({data}) => {
-        console.log(data);
+        resolve(data);
+      }).catch(err => console.log(err));
+    });
+  },
+  textSearch: (params) => {
+    const params_ = {
+      location: `${params.location.lat},${params.location.lng}`,
+      radius: params.radius || 400,
+      query: params.query || '',
+    };
+    return new Promise(resolve => {
+      req.get('/places/textsearch', {params: params_}).then(({data}) => {
+        resolve(data);
       }).catch(err => console.log(err));
     });
   }
