@@ -114,7 +114,7 @@ function createPostHandler(req, res) {
   res.json({userId: req.userId});
 }
 
-function nearBySearchPlace(req, res) {
+function nearBySearchHandler(req, res) {
   const query = req.query;
   googleAPIClient.get('/nearbysearch/json', {
     params: Object.assign({}, query, {
@@ -134,7 +134,7 @@ router.use('/api', new express.Router()
     .post('/tokens', createTokenHandler)
     .post('/posts', [requireAuthorization], createPostHandler)
     .use('/places', new express.Router()
-      .get('/nearbysearch', nearBySearchPlace)
+      .get('/nearbysearch', nearBySearchHandler)
     )
   )
 );
