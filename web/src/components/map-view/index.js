@@ -3,13 +3,6 @@ import React, {Component} from 'react';
 import MapUser from './map-user';
 import MapPlace from './map-place';
 
-const styles = {
-  container: {
-    width: '100%',
-    height: '100%',
-  },
-};
-
 export default class MapView extends Component {
   constructor() {
     super();
@@ -74,12 +67,12 @@ export default class MapView extends Component {
   }
   render() {
     return (
-      <section style={styles.container}>
+      <section className="map-view">
         <div onClick={() => {
           this._user.fetchPosition();
           this._map.panTo(this._user.getPosition());
         }}>current</div>
-        <section ref={this.setRef} style={styles.container}></section>
+        <section className="map-view--map" ref={this.setRef}></section>
       </section>
     );
   }

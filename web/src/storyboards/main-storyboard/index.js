@@ -7,13 +7,6 @@ import {Place} from '../../repositories';
 import Container from '../container';
 import MapView from '../../components/map-view';
 
-const styles = {
-  container: {
-    width: '100%',
-    height: '100%',
-  },
-};
-
 function isBrowser() {
   return typeof window === 'object';
 }
@@ -88,7 +81,7 @@ export default class MainStoryboard extends Container {
   }
   render() {
     return (
-      <section style={styles.container}>
+      <section className="storyboard">
         <h1>Main</h1>
         <ul>
           <li><Link href="/profile">Profile</Link></li>

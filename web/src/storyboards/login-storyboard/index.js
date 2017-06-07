@@ -50,7 +50,7 @@ export default class LoginStoryboard extends Container {
   }
   render() {
     return (
-      <section>
+      <section className="storyboard">
         <ul>
           <li><Link href="/profile">Profile</Link></li>
           <li><Link href="/posts">Posts</Link></li>

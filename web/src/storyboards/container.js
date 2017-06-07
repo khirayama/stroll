@@ -55,4 +55,3 @@ Container.propTypes = {
     addChangeListener: PropTypes.func.isRequired,
   }).isRequired,
 };
-
