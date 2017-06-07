@@ -125,6 +125,17 @@ function nearBySearchHandler(req, res) {
   });
 }
 
+function textSearchHandler(req, res) {
+  const query = req.query;
+  googleAPIClient.get('/textsearch/json', {
+    params: Object.assign({}, query, {
+      key: GOOGLE_API_KEY,
+    }),
+  }).then(({data}) => {
+    res.json(data);
+  });
+}
+
 // Router
 const router = new express.Router('');
 
@@ -135,6 +146,7 @@ router.use('/api', new express.Router()
     .post('/posts', [requireAuthorization], createPostHandler)
     .use('/places', new express.Router()
       .get('/nearbysearch', nearBySearchHandler)
+      .get('/textsearch', textSearchHandler)
     )
   )
 );
