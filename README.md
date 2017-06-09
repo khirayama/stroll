@@ -51,5 +51,5 @@
 
 - users(id / provider / uid / created_at / updated_at)
 - user_relationships(id / follower_user_id / followed_user_id / created_at / updated_at)
-- buckets(id / user_id / place_id / created_at / updated_at)
+- buckets(id / user_id / place_id / name / lat / lng / created_at / updated_at)
 - stamps(id / user_id / place_id / created_at / updated_at)
