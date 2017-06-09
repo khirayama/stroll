@@ -25,12 +25,24 @@ export default class MapView extends Component {
     this._el = el;
   }
   _initialize() {
+    var styleOptions = [{
+      featureType: 'all',
+      elementType: 'labels',
+      stylers: [{
+        visibility: 'off',
+      }],
+    }];
+    const lopanType = new google.maps.StyledMapType(styleOptions);
+
     this._user = new MapUser();
     this._map = new window.google.maps.Map(this._el, {
       zoom: 15,
       center: this._user.getPosition(),
       disableDefaultUI: true,
+      clickableIcons: false,
     });
+    this._map.mapTypes.set('noText', lopanType);
+    // this._map.setMapTypeId('noText');
 
     this._user.setMap(this._map);
     this._user.addPositionChangeListener((pos) => {
