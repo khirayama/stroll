@@ -54,10 +54,13 @@ export default class MapView extends Component {
     this.props.onLoad(position);
   }
   componentDidUpdate() {
-    console.log(this.props.places);
     this._clearPlaces();
     this.props.places.forEach(place => {
-      this._places.push(new MapPlace(this._map, place));
+      const place_ = new MapPlace(this._map, place);
+      this._places.push(place_);
+      place_.addEventListener('click', () => {
+        this.props.onClickPlace(place_);
+      });
     });
   }
   _clearPlaces() {

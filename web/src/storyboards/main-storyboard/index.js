@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import {Link} from '../../libs/web-storyboard/components';
 
@@ -21,12 +22,16 @@ export default class MainStoryboard extends Container {
         lng: 0,
       },
       places: [],
+      place: null,
       keyword: '',
+      isSearchViewShown: false,
+      isPlaceViewShown: false,
     });
 
     this.handleChangeInput = this._handleChangeInput.bind(this);
     this.handleLoadMap = this._handleLoadMap.bind(this);
     this.handleDragEndMap = this._handleDragEndMap.bind(this);
+    this.handleClickPlace = this._handleClickPlace.bind(this);
   }
   componentWillMount() {
     super.componentWillMount();
@@ -55,6 +60,12 @@ export default class MainStoryboard extends Container {
       mapCenter: mapCenter,
     });
     this._fetchPlace();
+  }
+  _handleClickPlace(place) {
+    this.setState({
+      place,
+      isPlaceViewShown: true,
+    });
   }
   _fetchPlace() {
     if (this.state.keyword) {
@@ -93,20 +104,40 @@ export default class MainStoryboard extends Container {
           </div>
           <div className="main-storyboard--header--right">
             <div className="main-storyboard--header--search-button">
-              <Link href="/profile">S</Link>
+              <div onClick={() => {
+                this.setState({isSearchViewShown: !this.state.isSearchViewShown});
+                setTimeout(() => {
+                  if (this.state.isSearchViewShown) {
+                    const inputElement = window.document.querySelector('.main-storyboard--search-view--input');
+                    inputElement.focus();
+                  }
+                });
+              }}>S</div>
             </div>
           </div>
         </header>
         <section className="main-storyboard--content">
-          <section className="main-storyboard--search-view">
-            <input value={this.state.value} onChange={this.handleChangeInput}/>
-            <ul>{this.state.places.map(place => <li key={place.id}>{place.name}</li>)}</ul>
+          <section className={classNames("main-storyboard--search-view", {"main-storyboard--search-view__open": this.state.isSearchViewShown})}>
+            <input className="main-storyboard--search-view--input" value={this.state.value} onChange={this.handleChangeInput} />
+            <ul>
+              <li onClick={() => {
+                this.setState({isSearchViewShown: false});
+              }}>Seach: {this.state.keyword}</li>
+              {this.state.places.map(place => <li key={place.id}>{place.name}</li>)}
+            </ul>
+          </section>
+          <section className={classNames("main-storyboard--place-view", {"main-storyboard--place-view__open": this.state.isPlaceViewShown})}>
+            {(this.state.place) ? <h2>{this.state.place.getName()}</h2> : "No information"}
+            <div onClick={() => {this.setState({place: null, isPlaceViewShown: false});}}>Close</div>
+            <div onClick={() => {console.log('Add bucket!');}}>Add bucket</div>
+            <div onClick={() => {console.log('Stamp!');}}>Stamp!</div>
           </section>
           <MapView
             className="main-storyboard--map-view"
             places={this.state.places || []}
             onLoad={this.handleLoadMap}
             onDragEnd={this.handleDragEndMap}
+            onClickPlace={this.handleClickPlace}
           />
         </section>
       </section>

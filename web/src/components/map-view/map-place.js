@@ -30,6 +30,9 @@ export default class MapPlace {
       },
     });
   }
+  addEventListener(eventType, callback) {
+    this._marker.addListener(eventType, callback.bind(this));
+  }
   clear() {
     this._marker.setMap(null);
   }
